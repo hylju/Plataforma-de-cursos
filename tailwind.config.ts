@@ -18,10 +18,11 @@ const config: Config = {
           900: '#2c083f'
         },
         progress: '#22c55e'
-      },      ringColor: theme => ({
-        ...theme('colors'),
+      },
+      ringColor: {
         brand: '#7B2CBF',
-      }),      fontFamily: {
+      },
+      fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif']
       }
     }

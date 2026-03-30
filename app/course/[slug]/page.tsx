@@ -37,7 +37,7 @@ export default function CoursePage() {
       const { data: modulesData } = await supabase.from('modules').select('*').eq('course_id', courseData.id).order('position');
       setModules(modulesData as Module[]);
 
-      if (modulesData?.length > 0) {
+      if (modulesData && modulesData.length > 0) {
         const moduleIds = modulesData.map((m: Module) => m.id);
         const { data: lessonsData } = await supabase.from('lessons').select('*').in('module_id', moduleIds).order('position');
         setLessons(lessonsData as Lesson[]);
@@ -45,7 +45,7 @@ export default function CoursePage() {
 
         const session = await supabase.auth.getSession();
         const userId = session.data.session?.user.id;
-        if (userId && lessonsData?.length > 0) {
+        if (userId && lessonsData && lessonsData.length > 0) {
           const { data: progressData } = await supabase
             .from('user_progress')
             .select('*')

@@ -15,16 +15,26 @@ export default function RegisterPage() {
     event.preventDefault();
     setLoading(true);
 
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (error) {
-      toast.error(error.message);
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Não foi possível criar a conta.');
+      }
+
+      toast.success(result.message || 'Conta criada! Verifique seu e-mail para ativar.');
+      router.push('/dashboard');
+    } catch (error) {
+      toast.error((error as Error).message || 'Falha ao conectar com o servidor.');
+    } finally {
       setLoading(false);
-      return;
     }
-
-    toast.success('Conta criada! Verifique seu e-mail para ativar.');
-    router.push('/dashboard');
   }
 
   return (
